@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.8/handlebars.min.js"
+      integrity="sha512-E1dSFxg+wsfJ4HKjutk/WaCzK7S2wv1POn1RRPGh8ZK+ag9l244Vqxji3r6wgz9YBf6+vhQEYJZpSjqWFPg9gg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script type="text/javascript" src="./index.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <title>Template and styling</title>
+  </head>
+  <body onload="fetchData()">
+    <p id="timeZone" style="padding: 2rem 5rem 0rem 5rem"></p>
+    <div id="output"></div>
+
+    <script type="text/x-handlebar-template" id="template">
+           <div class="container">
+             {{#each this}}
+      <div class="box">
+             <div class="box-header">
+               <img alt="author image" src="{{author_image}}" />
+               <h5>{{this.name}}</h5>
+               <p>posted on {{this.date}}</p>
+             </div>
+             <div class="box-body">
+               <div class="box-img"><img alt="" src="{{this.img}}" /></div>
+               <div class="box-content">
+                 <h2>{{this.title}}</h2>
+                 <p>{{this.body}}</p>
+               </div>
+             </div>
+           </div>
+             {{/each}}
+           </div>
+    </script>
+  </body>
+</html>
