@@ -19,7 +19,7 @@
     <script type="text/x-handlebar-template" id="template">
            <div class="container">
              {{#each this}}
-      <div class="box">
+      <div class="box" id={{this.id}}>
              <div class="box-header">
                <img alt="author image" src="{{author_image}}" />
                <h5>{{this.name}}</h5>

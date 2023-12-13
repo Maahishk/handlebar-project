@@ -16,10 +16,11 @@ async function fetchData() {
     );
     const postData = await postResponse.json();
 
-    postData.map((post) => {
+    postData.map((post, index) => {
       authorData.map((author) => {
         if (post.author_id === author.id) {
           dataArray.push({
+            id: index + 1,
             author_image: author.avatar_url,
             img: post.image_url,
             name: author.name,
@@ -48,6 +49,18 @@ async function fetchData() {
   } catch (error) {
     console.error("Error fetching authorData:", error);
   }
+  bgBox();
+}
+//flexbox cild background color changing
+function bgBox() {
+  let initial = 1;
+  dataArray.map((data) => {
+    var id = data.id + initial;
+    var styleFlexBox = document.getElementById(id);
+    initial += 1;
+    console.log(styleFlexBox);
+    styleFlexBox.style.backgroundColor = "rgba(0, 193, 255, 0.2)";
+  });
 }
 
 //sorting the array by date in descending order
