@@ -26,46 +26,71 @@ async function fetchData() {
             name: author.name,
             title: post.title,
             body: post.body,
-            date: post.created_at,
+            date: convertISODateToCustomFormat(post.created_at),
           });
         }
       });
     });
-    ///calling sortFunction inside sort method
-    dataArray.sort(sortFunction);
-    //to print the data
-    console.log(dataArray);
-
-    //get time zone
-    var timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    document.getElementById("timeZone").innerHTML =
-      "Your current time zone is: " + timeZone;
-
-    var source = document.getElementById("template").innerHTML;
-    //using handlebar compiler
-    var template = Handlebars.compile(source);
-    var filled = template(dataArray);
-    document.getElementById("output").innerHTML = filled;
+    // Sort the array of dates
+    dataArray.sort(compareDatesDescending);
+    handleBar();
   } catch (error) {
     console.error("Error fetching authorData:", error);
   }
-  bgBox();
+
+  changeBgColor();
 }
-//flexbox cild background color changing
-function bgBox() {
+function handleBar() {
+  //get time zone
+  var timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  document.getElementById("timeZone").innerHTML =
+    "Your current time zone is: " + timeZone;
+
+  var source = document.getElementById("template").innerHTML;
+  //using handlebar compiler
+  var template = Handlebars.compile(source);
+  var filled = template(dataArray);
+  document.getElementById("output").innerHTML = filled;
+}
+//flexbox background color changing
+function changeBgColor() {
   let initial = 1;
   dataArray.map((data) => {
     var id = data.id + initial;
     var styleFlexBox = document.getElementById(id);
     initial += 1;
-    console.log(styleFlexBox);
-    styleFlexBox.style.backgroundColor = "rgba(0, 193, 255, 0.2)";
+    try {
+      styleFlexBox.style.backgroundColor = "rgba(0, 193, 255, 0.2)";
+    } catch (error) {
+      console.log(error);
+    }
   });
 }
 
-//sorting the array by date in descending order
-function sortFunction(a, b) {
-  var dateA = new Date(a.date).getTime();
-  var dateB = new Date(b.date).getTime();
-  return dateA < dateB ? 1 : -1;
+// Function to compare dates in descending order
+function compareDatesDescending(a, b) {
+  const dateA = new Date(a);
+  const dateB = new Date(b);
+
+  // Compare in reverse order for descending sort
+  return dateB - dateA;
+}
+//convert iso date
+function convertISODateToCustomFormat(isoDateString) {
+  const date = new Date(isoDateString);
+
+  // Get day, month, year
+  const day = date.getUTCDate();
+  const month = date.getUTCMonth() + 1; // Months are zero-based
+  const year = date.getUTCFullYear();
+
+  // Get time
+  const hours = date.getUTCHours();
+  const minutes = date.getUTCMinutes();
+  const seconds = date.getUTCSeconds();
+
+  // Format the result
+  const formattedDate = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+
+  return formattedDate;
 }
